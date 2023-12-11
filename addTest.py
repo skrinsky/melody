@@ -28,7 +28,7 @@ def midi_to_sequences(midi_file):
 
     return sequences
 
-# Example usage:
+# Implement
 midi_folder_path = '/Users/summerkrinsky/Documents/python/midi'
 all_sequences = []  # Create a list to store sequences for all MIDI files
 
