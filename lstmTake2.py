@@ -1,3 +1,5 @@
+#more info here https://wordpress.com/view/summerliketheseasoncom.wordpress.com
+#listen to generated sounds https://soundcloud.com/summer-554845429/sets
 """ This module prepares midi file data and feeds it to the neural
     network for training """
 import glob
