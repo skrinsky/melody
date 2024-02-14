@@ -1,5 +1,5 @@
-#original plan was to write from scratch but ended up using https://github.com/Skuldur/Classical-Piano-Composer as a jumping off point
-#listen to generated sounds from this model https://soundcloud.com/djfroggirl/sets/computermom/s-v8sgM8KHOnl?si=a695f9411e414b7081076a4c78d9fdb0&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
+#more info here https://wordpress.com/view/summerliketheseasoncom.wordpress.com
+#listen to generated sounds https://soundcloud.com/summer-554845429/sets
 
 """ This module prepares midi file data and feeds it to the neural
     network for training """
