@@ -91,7 +91,7 @@ def create_network(pitch_vocab_size, velocity_vocab_size, duration_vocab_size):
 
     return model
 
-def generate_notes(model, network_input, pitch_names, velocity_names, duration_values, n_vocab_pitch, n_vocab_velocity, n_vocab_duration):
+def generate_notes(model, network_input, pitch_names, velocity_names, duration_values, n_vocab_pitch, n_vocab_velocity, n_vocab_duration, temp1=1.2, temp2= 1.0, temp3 = 1.0):
     """ Generate notes from the neural network based on a sequence of notes """
     start = np.random.randint(0, len(network_input)-1)
 
@@ -114,9 +114,24 @@ def generate_notes(model, network_input, pitch_names, velocity_names, duration_v
 
         prediction = model.predict([prediction_input_pitch, prediction_input_velocity, prediction_input_duration], verbose=0)
         
-        index_pitch = np.argmax(prediction[0])
-        index_velocity = np.argmax(prediction[1])
-        index_duration = np.argmax(prediction[2])
+        # Apply temperature scaling to the softmax outputs
+        prediction_pitch = np.log(prediction[0]) / temp1
+        prediction_velocity = np.log(prediction[1]) / temp2
+        prediction_duration = np.log(prediction[2]) / temp3
+        
+        # Softmax to get probabilities
+        exp_prediction_pitch = np.exp(prediction_pitch)
+        exp_prediction_velocity = np.exp(prediction_velocity)
+        exp_prediction_duration = np.exp(prediction_duration)
+        
+        prediction_pitch = exp_prediction_pitch / np.sum(exp_prediction_pitch)
+        prediction_velocity = exp_prediction_velocity / np.sum(exp_prediction_velocity)
+        prediction_duration = exp_prediction_duration / np.sum(exp_prediction_duration)
+        
+        # Sample from the scaled probabilities
+        index_pitch = np.random.choice(len(prediction_pitch[0]), p=prediction_pitch[0])
+        index_velocity = np.random.choice(len(prediction_velocity[0]), p=prediction_velocity[0])
+        index_duration = np.random.choice(len(prediction_duration[0]), p=prediction_duration[0])
 
         result_pitch = int_to_pitch[index_pitch]
         result_velocity = int_to_velocity[index_velocity]
@@ -205,4 +220,4 @@ def generate_midi(weights_file, notes_file, velocities_file, durations_file, out
     create_midi(prediction_output, output_filename)
 
 if __name__ == '__main__':
-    generate_midi('weights-improvement-18-1.0697-bigger.hdf5', 'data/notes', 'data/velocities', 'data/durations')
+    generate_midi('weights-improvement-133-0.2188-bigger.hdf5', 'data/notes', 'data/velocities', 'data/durations')
