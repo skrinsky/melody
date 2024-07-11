@@ -8,6 +8,7 @@ from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.optimizers import RMSprop
 import matplotlib.pyplot as plt
+import math
 seql = 50
 
 def train_network():
@@ -52,13 +53,13 @@ def get_notes(velocity_quantization=10):
 
         for element in notes_to_parse:
             if isinstance(element, note.Note):
-                quantized_velocity = round(element.volume.velocity / velocity_quantization) * velocity_quantization
+                quantized_velocity = math.floor(element.volume.velocity / velocity_quantization) * velocity_quantization
                 notes.append(str(element.pitch))
                 velocities.append(quantized_velocity)
                 durations.append(element.duration.quarterLength)
                 print("Note,", str(element.pitch), quantized_velocity, element.duration.quarterLength)
             elif isinstance(element, chord.Chord):
-                quantized_velocity = round(element.notes[0].volume.velocity / velocity_quantization) * velocity_quantization
+                quantized_velocity = math.floor(element.notes[0].volume.velocity / velocity_quantization) * velocity_quantization
                 chord_notes = [str(n.pitch) for n in element.notes]
                 for i, n in enumerate(chord_notes):
                     notes.append(n)
